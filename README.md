@@ -32,9 +32,32 @@ Restrição de acesso ao CMD e Painel de Controle para usuários finais.
 
 ![Arquitetura do LAB](docs/Diagrama.png)
 
+
 💻 Scripts em Destaque
 
 Exemplo de comando usado para delegar o reset de senha
-Set-ADAccountPassword "Usuario" -Reset -NewPassword $pass
 
+Set-ADAccountPassword "Usuario" -Reset -NewPassword $pass
 Você pode encontrar o código completo [aqui](scripts/passwordChange).
+
+Exemplo de comando usado para automação de criação de usuários
+
+Importa usuários de um CSV e os cria no AD
+$users = Import-Csv "C:\scripts\usuarios_novos.csv"
+
+foreach ($user in $users) {
+    New-ADUser -Name $user.Name -SamAccountName $user.Login `
+    -UserPrincipalName "$($user.Login)@thm.local" `
+    -Path "OU=$($user.Department),OU=THM,DC=thm,DC=local" `
+    -AccountPassword (ConvertTo-SecureString "SenhaPadrao123!" -AsPlainText -Force) `
+    -Enabled $true
+}
+
+Você pode encontrar o código completo [aqui](scripts/CreateUsersFromCSV.ps1).
+
+Script de Auditoria de Grupos (Segurança)
+
+
+
+
+
