@@ -30,3 +30,4 @@ Restrição de acesso ao CMD e Painel de Controle para usuários finais.
 
 🗺️ Arquitetura do Ambiente
 
+![Arquitetura do LAB](docs/Diagrama.png)
