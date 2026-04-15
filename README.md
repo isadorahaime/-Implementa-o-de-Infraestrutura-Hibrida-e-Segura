@@ -143,7 +143,7 @@ Durante a Fase 3 e 4, apliquei o conceito de Privilégio Mínimo (PoLP) para for
 
 Controle Temporal de Acessos: Configurei restrições de logon via AD DS para garantir que contas de usuários comuns (RH/Financeiro) não possuam permissão de autenticação fora do horário comercial, mitigando riscos de acessos indevidos em períodos não monitorados.
 
-![Gestão de Acesso](docs/prints/fase4-GPOs/06-Time-BasedAccess)
+![Gestão de Acesso](docs/prints/fase4-GPOs/06-Time-BasedAccess.png)
 
 Segregação de Funções: Utilizei grupos de segurança granulares em vez de permissões diretas por usuário, facilitando a auditoria e garantindo que cada colaborador acesse apenas os recursos vitais para sua função.
 
