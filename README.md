@@ -1,4 +1,4 @@
-# 🖥️ Implementação de Infraestrutura Híbrida e Segura
+# 🖥️ Implementação de Infraestrutura Windows Server Core
 
 ### 🎯 Objetivo do Projeto
 ***"Simular um ambiente de médio porte para demonstrar habilidades em administração de servidores, automação com PowerShell e aplicação do princípio de privilégio mínimo (Least Privilege)."***
