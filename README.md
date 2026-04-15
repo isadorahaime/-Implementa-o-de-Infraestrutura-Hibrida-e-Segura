@@ -95,6 +95,46 @@ gpupdate /force: Força a atualização imediata das políticas.
 
 gpresult /r: Gera um relatório no terminal para confirmar se a GPO está listada como "Applied".
 
+* ### Adaptação de Camada 3 (Rede Física vs. Virtual)
+
+Problema:
+Após uma alteração na infraestrutura de rede física (troca de roteador/gateway), o servidor Domain Controller perdeu a conectividade com a internet e o status da rede tornou-se "Unidentified Network".
+
+Causa:
+O novo roteador doméstico operava em uma sub-rede diferente (192.168.18.x), enquanto o servidor estava configurado estaticamente para a faixa antiga (192.168.1.x). Isso gerou um conflito de Gateway Padrão, impossibilitando a saída de pacotes para a WAN.
+
+Solução Aplicada:
+
+Re-endereçamento IP: Atualização do endereço IP estático do servidor para 192.168.18.13 e do Gateway para 192.168.18.1 para alinhar com o novo barramento físico.
+
+Ajuste de DNS Forwarding: Reconfiguração do DNS Preferred para o novo IP local, garantindo que o Active Directory continuasse resolvendo nomes internos e externos.
+
+Registro de Registros SRV: Execução do comando ipconfig /registerdns via PowerShell para atualizar os registros de serviço do AD no banco de dados DNS com o novo endereço IP.
+
+Aprendizado Crítico:
+Este incidente demonstrou a importância da independência de rede em laboratórios. Para projetos futuros, a implementação de um roteador virtual interno (como o PFSense ou uma rede NAT isolada no Hyper-V) pode abstrair mudanças na rede física, mantendo o ambiente lógico estável.
+
+* ### 🌐 Gestão de Serviços de Rede (DHCP & DNS)
+Cenário:
+Devido à mudança no endereçamento da rede física para a faixa 192.168.18.x, foi necessário reconfigurar a distribuição dinâmica de IPs para manter a conectividade do ambiente de laboratório.
+
+Ações Realizadas:
+
+Instalação da Role: Implementação da função de DHCP Server no Windows Server 2022 via Server Manager.
+
+Configuração de Escopo: Criação de um novo escopo IPv4 com a faixa de distribuição 192.168.18.50 a 192.168.18.254.
+
+Definição de Opções de Escopo (Options):
+
+Router (003): Configurado para o novo Gateway 192.168.18.1.
+
+DNS Servers (006): Apontado para o IP estático do Domain Controller (192.168.18.13) para garantir a resolução de nomes interna do domínio.
+
+Autorização no AD: Realizada a autorização do servidor DHCP no Active Directory para permitir o início da distribuição de concessões (leases).
+
+Resultado:
+O ambiente recuperou a capacidade de provisionamento automático de rede, permitindo que estações Windows 10/11 ingressassem no domínio e acessassem recursos externos simultaneamente, mesmo após alterações na topologia física.
+
 ---
 
 ### 📚 Principais Aprendizados
